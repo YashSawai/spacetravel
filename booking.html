@@ -1,0 +1,85 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8" />
+    <title>Booking Page</title>
+    <link rel="stylesheet" href="css/bookstyle.css" />
+  </head>
+
+  <body>
+    <h1>Available Journeys for Booking</h1>
+
+    <div id="journeyList">
+      <!-- Display the list of available journeys here based on the parameters -->
+    </div>
+
+    <script src="https://code.jquery.com/jquery-3.4.1.min.js"></script>
+    <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.4.1/js/bootstrap.bundle.min.js"></script>
+    <script>
+      document.addEventListener("DOMContentLoaded", function () {
+        // Use JavaScript to retrieve parameters from the URL
+        const urlParams = new URLSearchParams(window.location.search);
+        const destination = urlParams.get("destination");
+        const startDate = urlParams.get("startDate");
+        const returnDate = urlParams.get("returnDate");
+
+        // Sample data for available planets and journeys
+        const availablePlanets = ["Mars", "Moon", "Saturn"];
+
+        // Ensure that all displayed planets are the same based on the selected destination
+        const selectedPlanet = availablePlanets.includes(destination)
+          ? destination
+          : availablePlanets[0];
+
+        // Update background image based on the selected planet
+        document.body.style.backgroundImage = `url('${getBackgroundImage(
+          selectedPlanet
+        )}')`;
+        document.body.style.backgroundSize = "cover"; // Adjust background size if needed
+
+        // Display the parameters and list of available journeys with the selected planet
+        const journeyListContainer = document.getElementById("journeyList");
+        journeyListContainer.innerHTML = `
+          <p>Destination: ${selectedPlanet}</p>
+          <p>Start Date: ${startDate}</p>
+          <p>Return Date: ${returnDate}</p>
+          <h2>List of Available Journeys:</h2>
+          <ul>
+            ${availablePlanets
+              .map(
+                (planet) => `
+                  <li>
+                    <strong>Destination:</strong> ${planet}<br>
+                    <strong>Start Date:</strong> ${startDate}<br>
+                    <strong>Return Date:</strong> ${returnDate}<br>
+                    <button onclick="bookNow('${planet}')">Book Now</button>
+                  </li>
+                `
+              )
+              .join("")}
+          </ul>
+        `;
+      });
+
+      // Function to get background image based on the selected planet
+      function getBackgroundImage(planet) {
+        switch (planet) {
+          case "Mars":
+            return "bookimg/mars.jpg";
+          case "Moon":
+            return "bookimg/moon.jpg";
+          case "Saturn":
+            return "bookimg/saturn.jpg";
+          default:
+            return "bookimg/default.jpg";
+        }
+      }
+
+      // Function to handle the "Book Now" button click
+      function bookNow(planet) {
+        alert(`Booking now for the journey to ${planet}!`);
+        // You can replace the alert with your actual booking logic
+      }
+    </script>
+  </body>
+</html>
